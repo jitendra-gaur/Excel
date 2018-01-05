@@ -1,0 +1,152 @@
+'Create a DashDB connection and refresh the Data and Sort the data as per requirement on click of the button.
+
+Sub test_newmacro()
+'
+' test_newmacro Macro
+'
+' Keyboard Shortcut: Ctrl+y
+'
+    
+    
+    Dim r As Range
+    Dim names(18) As String
+    Dim s As Variant
+    
+    names(0) = "Automation"
+    names(1) = "Big Data Services"
+    names(2) = "Cloud Adoption Services"
+    names(3) = "Cloud Application Development"
+    names(4) = "Custom ADM"
+    names(5) = "EA Domain"
+    names(6) = "Hybris"
+    names(7) = "IBM IGNITE"
+    names(8) = "Microsoft"
+    names(9) = "Microsoft ADM"
+    names(10) = "Migration Factory"
+    names(11) = "Mobile at Scale"
+    names(12) = "Oracle"
+    names(13) = "Oracle ADM"
+    names(14) = "SAP"
+    names(15) = "SAP ADM"
+    names(16) = "Security and Privacy"
+    names(17) = "Workday"
+    names(18) = "(blank)"
+
+    Dim a As Variant
+    Dim b As Variant
+    Dim i As Integer
+    i = 0
+    Sheets("Summary").Range("C12:F19").Value = ""
+            
+    
+    ActiveWorkbook.RefreshAll
+    Sheets("TA Pipeline to Usage PV").Select
+    Range("A6:A120").Select
+    Selection.Copy
+    Sheets("TA Pipeline to Usage Final").Select
+    Range("A3").Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+    Sheets("TA Pipeline to Usage PV").Select
+    
+    
+    For Each s In names
+        Sheets("TA Pipeline to Usage PV").Select
+        ActiveSheet.Range("B4:AM4").Select
+        Set cell = Selection.Find(What:=s, After:=ActiveCell, LookIn:=xlFormulas, _
+        LookAt:=xlWhole, SearchOrder:=xlByRows, SearchDirection:=xlNext, _
+        MatchCase:=False, SearchFormat:=False)
+
+        If cell Is Nothing Then
+            
+            i = i + 1
+            Sheets("Summary").Select
+            ActiveSheet.Cells(11 + i, 3).Value = i
+            ActiveSheet.Cells(11 + i, 4).Value = s
+            
+        Else
+            Sheets("TA Pipeline to Usage PV").Select
+            ActiveSheet.Range(Cells(cell.Row + 2, cell.Column), Cells(cell.Row + 116, cell.Column + 1)).Select
+            Selection.Copy
+            Sheets("TA Pipeline to Usage Final").Select
+            
+            If s = "Automation" Then
+                Range("B3").Select
+            ElseIf s = "Big Data Services" Then
+                Range("D3").Select
+            ElseIf s = "Cloud Adoption Services" Then
+                Range("F3").Select
+            ElseIf s = "Cloud Application Development" Then
+                Range("H3").Select
+            ElseIf s = "Custom ADM" Then
+                Range("J3").Select
+            ElseIf s = "EA Domain" Then
+                Range("L3").Select
+            ElseIf s = "Hybris" Then
+                Range("N3").Select
+            ElseIf s = "IBM IGNITE" Then
+                Range("P3").Select
+            ElseIf s = "Microsoft" Then
+                Range("R3").Select
+            ElseIf s = "Microsoft ADM" Then
+                Range("T3").Select
+            ElseIf s = "Migration Factory" Then
+                Range("V3").Select
+            ElseIf s = "Mobile at Scale" Then
+                Range("X3").Select
+            ElseIf s = "Oracle" Then
+                Range("Z3").Select
+            ElseIf s = "Oracle ADM" Then
+                Range("AB3").Select
+            ElseIf s = "SAP" Then
+                Range("AD3").Select
+            ElseIf s = "SAP ADM" Then
+                Range("AF3").Select
+            ElseIf s = "Security and Privacy" Then
+                Range("AH3").Select
+            ElseIf s = "Workday" Then
+                Range("AJ3").Select
+            ElseIf s = "(blank)" Then
+                Range("AL3").Select
+                                
+            End If
+            Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+                :=False, Transpose:=False
+           Sheets("TA Pipeline to Usage PV").Select
+            'do it another thing
+        
+        End If
+          
+    Next s
+    
+    Sheets("TA Pipeline to Usage Final").Select
+    Application.CutCopyMode = False
+    ActiveWorkbook.Worksheets("TA Pipeline to Usage Final").Sort.SortFields.Clear
+    ActiveWorkbook.Worksheets("TA Pipeline to Usage Final").Sort.SortFields.Add( _
+        Range("AN3:AN118"), xlSortOnCellColor, xlAscending, , xlSortNormal).SortOnValue _
+        .Color = RGB(189, 215, 238)
+    ActiveWorkbook.Worksheets("TA Pipeline to Usage Final").Sort.SortFields.Add( _
+        Range("AO3:AO118"), xlSortOnCellColor, xlAscending, , xlSortNormal).SortOnValue _
+        .Color = RGB(237, 125, 49)
+    ActiveWorkbook.Worksheets("TA Pipeline to Usage Final").Sort.SortFields.Add( _
+        Range("AN3:AN118"), xlSortOnCellColor, xlAscending, , xlSortNormal).SortOnValue _
+        .Color = RGB(255, 235, 156)
+    ActiveWorkbook.Worksheets("TA Pipeline to Usage Final").Sort.SortFields.Add( _
+        Range("AO3:AO118"), xlSortOnCellColor, xlAscending, , xlSortNormal).SortOnValue _
+        .Color = RGB(255, 230, 153)
+    ActiveWorkbook.Worksheets("TA Pipeline to Usage Final").Sort.SortFields.Add _
+        Key:=Range("AN3:AN118"), SortOn:=xlSortOnValues, Order:=xlAscending, _
+        DataOption:=xlSortNormal
+    ActiveWorkbook.Worksheets("TA Pipeline to Usage Final").Sort.SortFields.Add _
+        Key:=Range("AO3:AO118"), SortOn:=xlSortOnValues, Order:=xlAscending, _
+        DataOption:=xlSortNormal
+    With ActiveWorkbook.Worksheets("TA Pipeline to Usage Final").Sort
+        .SetRange Range("A2:AO118")
+        .Header = xlYes
+        .MatchCase = False
+        .Orientation = xlTopToBottom
+        .SortMethod = xlPinYin
+        .Apply
+    End With
+
+End Sub
