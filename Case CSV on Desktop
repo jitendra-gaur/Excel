@@ -1,0 +1,114 @@
+'On Click of the button following code will modify the file and will save the file in CSV format on desktop.
+'''Excel VBA
+
+
+Sub Button1_Click()
+
+'
+' Template_creation Macro
+'
+' Keyboard Shortcut: Ctrl+a
+'
+    Sheets("rp_GBS_Top_Opportunity_Detail").Select
+    
+    
+    ActiveSheet.Range("A:A").Select
+    Set cell = Selection.Find(What:="Opp No", After:=ActiveCell, LookIn:=xlFormulas, _
+        LookAt:=xlWhole, SearchOrder:=xlByRows, SearchDirection:=xlNext, _
+        MatchCase:=True, SearchFormat:=False)
+
+    If cell Is Nothing Then
+            
+    MsgBox ("No Value Found")
+    Else
+        Sheets("rp_GBS_Top_Opportunity_Detail").Select
+        MsgBox ("Location of cell is" & cell.Row)
+        'ActiveSheet.Range(Cells(cell.Row + 2, cell.Column), Cells(cell.Row + 116, cell.Column + 1)).Select
+         '   Selection.Copy
+         '   Sheets("TA Pipeline to Usage Final").Select
+    End If
+    
+    
+    
+    ActiveSheet.Shapes.Range(Array("SMS-Standard-Report-small.jpeg")).Select
+    Selection.Delete
+    
+    ActiveSheet.Range(Cells(1, 1), Cells(cell.Row - 1, 1)).Select
+    
+    'Rows("1:9").Select
+    Selection.Delete Shift:=xlUp
+    
+    
+    
+    ActiveSheet.Range("A:A").Select
+    Set cell = Selection.Find(What:="Summary", After:=ActiveCell, LookIn:=xlFormulas, _
+        LookAt:=xlWhole, SearchOrder:=xlByRows, SearchDirection:=xlNext, _
+        MatchCase:=True, SearchFormat:=False)
+
+    If cell Is Nothing Then
+            
+    MsgBox ("No Value Found")
+    Else
+        Sheets("rp_GBS_Top_Opportunity_Detail").Select
+        MsgBox ("Location of cell is" & cell.Row)
+        'ActiveSheet.Range(Cells(cell.Row + 2, cell.Column), Cells(cell.Row + 116, cell.Column + 1)).Select
+         '   Selection.Copy
+         '   Sheets("TA Pipeline to Usage Final").Select
+    End If
+    
+    Dim a As Integer
+    
+    a = cell.Row
+    ActiveSheet.Range(Cells(cell.Row, 1), Cells(cell.Row + 20, 1)).Select
+    
+    'Rows("1:9").Select
+    Selection.Delete Shift:=xlUp
+    
+    
+    Selection.End(xlToLeft).Select
+    
+    
+    Range("S1").Select
+    ActiveCell.FormulaR1C1 = "Level 20 Description"
+    Range("J1").Select
+    Selection.EntireColumn.Insert
+    Range("K1").Select
+    Selection.Copy
+    Range("J1").Select
+    ActiveSheet.Paste
+    Range("J2").Select
+    Application.CutCopyMode = False
+    ActiveCell.FormulaR1C1 = "=ROUND(VALUE(RC[1]),0)"
+    Range("J2").Select
+    Selection.AutoFill Destination:=Range(Cells(2, 10), Cells(a, 10))
+    ActiveSheet.Range(Cells(2, 10), Cells(a, 10)).Select
+    'Range("J2:J18460").Select
+    Selection.Copy
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+    Columns("K:K").Select
+    Application.CutCopyMode = False
+    Selection.Delete Shift:=xlToLeft
+    Range("Z1").Select
+    Selection.EntireColumn.Insert
+    Range("AA1").Select
+    Selection.Copy
+    Range("Z1").Select
+    ActiveSheet.Paste
+    Range("Z2").Select
+    Application.CutCopyMode = False
+    ActiveCell.FormulaR1C1 = "=ROUND(VALUE(RC[1]),0)"
+    Range("Z2").Select
+    Selection.AutoFill Destination:=Range(Cells(2, 26), Cells(a, 26))
+    ActiveSheet.Range(Cells(2, 26), Cells(a, 26)).Select
+    Selection.Copy
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+    Columns("AA:AA").Select
+    Application.CutCopyMode = False
+    Selection.Delete Shift:=xlToLeft
+    ActiveWorkbook.SaveAs Filename:= _
+        "C:\Users\IBM_ADMIN\Desktop\CAI_PIPELINE_TMP.csv", FileFormat:=xlCSV, _
+        CreateBackup:=False
+
+End Sub
